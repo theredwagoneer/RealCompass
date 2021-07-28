@@ -1,0 +1,8 @@
+
+rootProject.name = 'Real Compass'
+
+sourceControl {
+    gitRepository("https://github.com/theredwagoneer/javaTic.git") {
+        producesModule("trw.pololu.tic:javaTic")
+    }
+}
