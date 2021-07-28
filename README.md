@@ -24,3 +24,7 @@ Examples:
 	- Edit locationText to give the location a real name instead of "location #"
 	- Set the writeProtect to "true" to prevent accidently overwriting this location
 	- Expand the array to add locations.
+
+## License
+
+MIT License
