@@ -1,5 +1,5 @@
 
-rootProject.name = 'Real Compass'
+rootProject.name = 'RealCompass'
 
 sourceControl {
     gitRepository("https://github.com/theredwagoneer/javaTic.git") {
