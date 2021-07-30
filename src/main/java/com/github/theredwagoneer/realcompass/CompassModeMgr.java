@@ -1,6 +1,7 @@
-package trw.realcompass;
+package com.github.theredwagoneer.realcompass;
 
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -46,13 +47,13 @@ class CompassModeMgr {
 	private ArrayList<SavedLocationMode> modeSaveList;
 	
 	/** Name of the json file to save the locations to */
-	private String saveFileName;
+	private File saveFileName;
 	
 	/**
 	 * Constructor
 	 * @param filename - Name of file to save locations to
 	 */
-	CompassModeMgr(String filename)		
+	CompassModeMgr(File filename)		
 	{ 
 		saveFileName = filename;
 		try {
@@ -220,7 +221,7 @@ class CompassModeMgr {
 		private double xsaved = 0;
 		private double zsaved = 0;
 		private boolean hasSavedLocation = false;
-		private boolean writeProtect = true;
+		private boolean writeProtect = false;
 		private String locationText;
 	    
 		SavedLocationMode(String locationText)
@@ -233,17 +234,16 @@ class CompassModeMgr {
 		}
 		public String saveCurrentLocation()
 		{
-			xsaved = mc.player.xo;
-			zsaved = mc.player.zo;
-			hasSavedLocation = true;
-			
 			if (writeProtect == false)
 			{
-				return MessageFormat.format("({0},{1} saved to {2}",xsaved,zsaved,locationText);
+				xsaved = mc.player.xo;
+				zsaved = mc.player.zo;
+				hasSavedLocation = true;
+				return MessageFormat.format("({0},{1}) saved to {2}",xsaved,zsaved,locationText);
 			}
 			else
 			{
-				return MessageFormat.format("({0} has been write protected.  You cannot save to this location",locationText);
+				return MessageFormat.format("{0} has been write protected.  You cannot save to this location",locationText);
 			}
 		}
 		

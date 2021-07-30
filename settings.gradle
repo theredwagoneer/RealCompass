@@ -3,6 +3,6 @@ rootProject.name = 'RealCompass'
 
 sourceControl {
     gitRepository("https://github.com/theredwagoneer/javaTic.git") {
-        producesModule("trw.pololu.tic:javaTic")
+        producesModule("com.github.theredwagoneer.javatic:javaTic")
     }
 }

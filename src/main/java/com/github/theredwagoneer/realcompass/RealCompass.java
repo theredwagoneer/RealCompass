@@ -1,4 +1,4 @@
-package trw.realcompass;
+package com.github.theredwagoneer.realcompass;
 
 import org.apache.commons.lang3.tuple.Pair;
 

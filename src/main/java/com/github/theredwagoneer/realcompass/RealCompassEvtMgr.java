@@ -1,4 +1,6 @@
-package trw.realcompass;
+package com.github.theredwagoneer.realcompass;
+
+import java.io.File;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -7,6 +9,8 @@ import net.minecraft.util.text.TextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -51,6 +55,7 @@ class RealCompassEvtMgr
     
 		// Register the ClientTick to the Forge Event Bus
 		MinecraftForge.EVENT_BUS.addListener(this::ClientTick);
+		MinecraftForge.EVENT_BUS.addListener(this::playerLoad);
 		
 	}
 	
@@ -70,12 +75,20 @@ class RealCompassEvtMgr
 		ClientRegistry.registerKeyBinding(KB_COMPASS_FUNCTION);
 		ClientRegistry.registerKeyBinding(KB_COMPASS_SAVE);
 		
-		 MC = Minecraft.getInstance();
-		 COMPASS_MODE = new CompassModeMgr("CompassLocations.json");
-		 COMPASS = new Compass(COMPASS_MODE);
-       
+		 MC = Minecraft.getInstance();       
     }
 
+	/**
+	 * Instantiates the compass when a player is loaded
+	 * @param event - The player load event
+	 */
+	public void playerLoad(PlayerEvent.LoadFromFile event) {
+		File filename = new File(event.getPlayerDirectory(),event .getPlayerUUID()+"-CompassLocations.json");
+		COMPASS_MODE = new CompassModeMgr(filename);
+		COMPASS = new Compass(COMPASS_MODE);
+	}
+	
+	
 	/**
 	 * Monitors for key presses and activates compass functions in reaction.
 	 * @param event - Client tick event

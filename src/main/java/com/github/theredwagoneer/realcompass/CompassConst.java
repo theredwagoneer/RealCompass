@@ -1,9 +1,9 @@
-package trw.realcompass;
+package com.github.theredwagoneer.realcompass;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import trw.pololu.tic.TicSet;
+import com.github.theredwagoneer.javatic.TicSet;
 
 /**
  * Holds the constants controlling how the MOD interacts with the motor.
