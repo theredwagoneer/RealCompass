@@ -83,6 +83,12 @@ class RealCompassEvtMgr
 	 * @param event - The player load event
 	 */
 	public void playerLoad(PlayerEvent.LoadFromFile event) {
+		if (COMPASS != null)
+		{
+			// If compass was previously instantiated, kill the task
+			// before you make a new one
+			COMPASS.kill();
+		}
 		File filename = new File(event.getPlayerDirectory(),event .getPlayerUUID()+"-CompassLocations.json");
 		COMPASS_MODE = new CompassModeMgr(filename);
 		COMPASS = new Compass(COMPASS_MODE);

@@ -18,9 +18,6 @@ import com.github.theredwagoneer.javatic.*;
  *
  */
 class Compass {
-	/** Timer to update compass with new commands */
-	private static final Timer UPDATE_TIMER = new Timer("CompassUpdateTimer",true);
-	
 	/** Client Minecraft instance */
     private static final Minecraft MC = Minecraft.getInstance();
     
@@ -39,38 +36,59 @@ class Compass {
     /** Energize compass on next update */
     private boolean energizeFlag = false;
     
+    /** Exit the update thread */
+    
+    private boolean killTheUpdate = false;
+    
     /**
-     * Task to periodically run when to update the compass position and
-     * pass in any pending commands.
+     * Extends thread class to give us a periodic task to update the 
+     * compass.
      */
-    private final TimerTask updateTask = new TimerTask() {
+    private class CompassUpdateThread extends Thread {
+    	/**
+    	 * Passthrough constructor
+    	 * @param name - name of the thread
+    	 */
+    	CompassUpdateThread( String name )
+    	{
+    		super(name);
+    	}
+    	
+    	/**
+    	 * Loop to update the timer
+    	 */
     	public void run() {	
-    		try
+    		while ( killTheUpdate == false )
     		{
-	    		if (MC.player != null)
+    			try
+    			{
+    				Thread.sleep(CompassConst.UPDATE_PERIOD_MS);
+		    		if (MC.player != null)
+		    		{
+		    			if (deenergizeFlag == true)
+		        		{
+		        			TicCmd.DEENERGIZE.Send(tic);
+		        			deenergizeFlag = false;
+		        		}
+		        		if (energizeFlag == true)
+		        		{
+		        			TicCmd.ENERGIZE.Send(tic);
+		        			energizeFlag = false;
+		        		}
+		    			if (setHomeFlag == true)
+		    			{
+		    				tic.setHome();
+		    				setHomeFlag = false;
+		    			}
+		    			setDirection( COMPASS_MODE.computeDirection() );
+		    		}
+	    		}
+	    		catch (UsbDisconnectedException | UsbException | InterruptedException e)
 	    		{
-	    			if (deenergizeFlag == true)
-	        		{
-	        			TicCmd.DEENERGIZE.Send(tic);
-	        			deenergizeFlag = false;
-	        		}
-	        		if (energizeFlag == true)
-	        		{
-	        			TicCmd.ENERGIZE.Send(tic);
-	        			energizeFlag = false;
-	        		}
-	    			if (setHomeFlag == true)
-	    			{
-	    				tic.setHome();
-	    				setHomeFlag = false;
-	    			}
-	    			setDirection( COMPASS_MODE.computeDirection() );
+	    			// Swallow.
 	    		}
     		}
-    		catch (UsbDisconnectedException | UsbException e)
-    		{
-    			// Swallow.
-    		}
+    		
         }
     };
 	
@@ -82,13 +100,16 @@ class Compass {
      * @param mode - The instance of the compass mode manager to link to this
      * 			compass instance
      */
-    public Compass(CompassModeMgr mode)
+    public Compass(CompassModeMgr modeMgr)
 	{
-    	COMPASS_MODE = mode;
+    	COMPASS_MODE = modeMgr;
     	   	
 		tic.applySettings(CompassConst.MOTOR_SETTINGS);
 		
-		UPDATE_TIMER.schedule(updateTask, 0, CompassConst.UPDATE_PERIOD_MS);
+		CompassUpdateThread updater = new CompassUpdateThread("Compass Update Thread");
+		updater.setDaemon(true);
+		updater.setPriority(Thread.MIN_PRIORITY);
+		updater.start();
     }
 
     /**
@@ -113,6 +134,14 @@ class Compass {
     public void deenergize()
     {
     	this.deenergizeFlag = true;
+    }
+    
+    /**
+     * Kill the update thread before the object goes out of scope
+     */
+    public void kill()
+    {
+    	this.killTheUpdate = true;
     }
 	
 	/**
