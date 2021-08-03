@@ -1,5 +1,7 @@
 package com.github.theredwagoneer.realcompass;
 
+
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import net.minecraftforge.api.distmarker.Dist;
@@ -35,8 +37,8 @@ public class RealCompass
 		//Make sure the mod being absent on the other network side does not cause the client to display the server as incompatible
 		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
 		
-		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> evtMgr::register );
-
+		DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> evtMgr::register );	
+		
 	}
 	
 	
