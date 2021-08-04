@@ -97,7 +97,7 @@ class Compass {
      * 
      * Apply the motor settings and start the periodic updates
      * 
-     * @param mode - The instance of the compass mode manager to link to this
+     * @param modeMgr - The instance of the compass mode manager to link to this
      * 			compass instance
      */
     public Compass(CompassModeMgr modeMgr)
