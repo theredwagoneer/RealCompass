@@ -41,7 +41,7 @@ class CompassConst {
 		MOTOR_SETTINGS.put(TicSet.SOFT_ERROR_POSITION,        0L);
 		MOTOR_SETTINGS.put(TicSet.COMMAND_TIMEOUT,            0L);
 		MOTOR_SETTINGS.put(TicSet.VIN_CALIBRATION,            0L);
-		MOTOR_SETTINGS.put(TicSet.CURRENT_LIMIT,              3L);
+		MOTOR_SETTINGS.put(TicSet.CURRENT_LIMIT,              5L);
 		MOTOR_SETTINGS.put(TicSet.CURRENT_LIMIT_DURING_ERROR, 255L);
 		MOTOR_SETTINGS.put(TicSet.DECAY_MODE,                 1L);
 		MOTOR_SETTINGS.put(TicSet.AUTO_HOMING,                0L);
@@ -61,7 +61,7 @@ class CompassConst {
 		// not going to bother figuring out the deal with this yet
 		
 		long stepMode   = 0; 		 // 0 = 1, 1 = 1/2, 2 = 1/4, 3 = 1/8
-		long maxSpeed   = 10000000;
+		long maxSpeed   = 8500000;
 	    long startSpeed = 0;
 	    long maxAccel   = 80000;
 	    long maxDecel   = 80000;

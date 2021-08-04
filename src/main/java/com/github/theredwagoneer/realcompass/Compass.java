@@ -1,13 +1,13 @@
 package com.github.theredwagoneer.realcompass;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import javax.usb.UsbDisconnectedException;
 import javax.usb.UsbException;
 
+import com.github.theredwagoneer.javatic.TicCmd;
+import com.github.theredwagoneer.javatic.TicInterface;
+import com.github.theredwagoneer.javatic.TicVar;
+
 import net.minecraft.client.Minecraft;
-import com.github.theredwagoneer.javatic.*;
 
 /**
  * Controls the actual interaction between the game and the compass hardware
